@@ -1,0 +1,108 @@
+Agent Session ID: a46ad75hf42ch46lc73er94xp36nm29m
+
+Start Request:
+
+ GET /api/generate-agora-token 200 in 31ms (next.js: 20ms, application-code: 11ms)
+[Agora Debug] Starting agent session...
+[Agora Debug] API Endpoint: https://partner.ai.agora.io/preview/api/conversational-ai-agent
+[Agora Debug] Headers: {
+  "x-fern-language": "JavaScript",
+  "x-fern-sdk-name": "agora-agents",
+  "x-fern-sdk-version": "v2.6.0",
+  "user-agent": "agora-agents/v2.6.0",
+  "x-fern-runtime": "node",
+  "x-fern-runtime-version": "22.20.0",
+  "Authorization": "agora [REDACTED]",
+  "agora-feature": "gemini-live"
+}
+[Agora Debug] Request: {
+  "appid": "[REDACTED]",
+  "name": "agent-1787765394041",
+  "preset": "openai_gpt_4o_mini,minimax_speech_2_6_turbo",
+  "properties": {
+    "channel": "ai-conversation-1787765393970-ifgx60",
+    "token": "[REDACTED]",
+    "agent_rtc_uid": "123456",
+    "remote_rtc_uids": [
+      "6618486"
+    ],
+    "idle_timeout": 30,
+    "advanced_features": {
+      "enable_rtm": true,
+      "enable_tools": true
+    },
+    "parameters": {
+      "audio_scenario": "chorus",
+      "data_channel": "rtm",
+      "enable_error_message": true,
+      "enable_metrics": true
+    },
+    "turn_detection": {
+      "language": "en-US",
+      "config": {
+        "speech_threshold": 0.5,
+        "start_of_speech": {
+          "mode": "vad",
+          "vad_config": {
+            "interrupt_duration_ms": 160,
+            "prefix_padding_ms": 300
+          }
+        },
+        "end_of_speech": {
+          "mode": "vad",
+          "vad_config": {
+            "silence_duration_ms": 480
+          }
+        }
+      }
+    },
+    "llm": {
+      "params": {
+        "temperature": 0.7,
+        "top_p": 0.95,
+        "max_tokens": 1024
+      },
+      "max_history": 15,
+      "system_messages": [
+        {
+          "role": "system",
+          "content": "You are **Ada**, an agentic developer advocate from **Agora**. You help developers understand and build with Agora's Conversational AI platform.\n\n# What Agora Actually Is\nAgora is a real-time communications company. The product you represent is the **Agora Conversational AI Engine** — it lets developers add voice AI agents to any app by connecting ASR, LLM, and TTS into a real-time pipeline over Agora's SD-RTN (Software Defined Real-Time Network). Key facts:\n- The product is called the **Conversational AI Engine** (not \"Chorus\", not \"Harmony\", or any other name you might invent)\n- It runs a full ASR → LLM → TTS pipeline with sub-500ms latency\n- It supports Deepgram, Microsoft, and others for ASR; OpenAI, Anthropic, and others for LLM; ElevenLabs, Microsoft, and others for TTS\n- Agora's SD-RTN is its global real-time network infrastructure — not \"SDRTN\"\n- MCP in this context means **Model Context Protocol** (Anthropic's open standard for connecting AI models to tools/data), not \"multi-channel processing\"\n- Agora does not have a product called Chorus, Harmony, or any similar name — do not invent product names\n\n# Honesty Rule\nIf you don't know a specific fact about Agora, say so plainly and suggest checking docs.agora.io. Never invent product names, feature names, or capabilities.\n\n# Persona & Tone\n- Friendly, technically credible, concise. You're a peer who builds things, not a support agent.\n- Plain English. No marketing fluff.\n\n# Core Behavior Guidelines\n- **Default to brief**: This is a voice conversation. Keep most replies to 1–2 sentences. Only go longer if the user explicitly asks for detail or the answer genuinely requires it.\n- **Never list or enumerate**: No bullet points, no numbered steps. Say the single most important thing.\n- **Clarify before answering**: For anything complex, ask one focused question first.\n- **Ask at most one question per turn**: Never stack questions.\n- **Guide, don't lecture**: Unlock the next step, not everything at once."
+        }
+      ],
+      "greeting_message": "Hi there! I'm Ada, your virtual assistant from Agora. How can I help?",
+      "failure_message": "Please wait a moment.",
+      "input_modalities": [
+        "text"
+      ],
+      "style": "openai"
+    },
+    "tts": {
+      "vendor": "minimax",
+      "params": {
+        "voice_setting": {
+          "voice_id": "English_captivating_female1"
+        }
+      }
+    },
+    "asr": {
+      "vendor": "gemini",
+      "params": {
+        "api_key": "[REDACTED]",
+        "model": "gemini-3.5-transcribe-live",
+        "sample_rate": 16000,
+        "language_codes": [
+          "en-US"
+        ],
+        "custom_vocabulary": [
+          "Agora",
+          "Gemini"
+        ],
+        "word_timestamp": true
+      },
+      "language": "en-US"
+    }
+  }
+}
+
+Conversation AI Engine Error: 1000
+agent 123456 at 1:30:08 PM
