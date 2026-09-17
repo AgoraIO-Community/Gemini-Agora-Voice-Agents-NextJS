@@ -37,7 +37,7 @@ Use the Agora CLI to create or select a project, then copy the exported values i
 agora login
 agora project create my-first-voice-agent --feature rtc --feature convoai
 agora project use my-first-voice-agent
-agora project env --with-secrets
+agora project env write .env.local
 ```
 
 Map:
