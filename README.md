@@ -50,7 +50,7 @@ pnpm install
 Write the Agora App ID, App Certificate, and other project values from the selected Agora project:
 
 ```bash
-agora project env write .env.local --with-secrets
+agora project env write .env.local
 ```
 
 Open `.env.local` and add your Google API key:
