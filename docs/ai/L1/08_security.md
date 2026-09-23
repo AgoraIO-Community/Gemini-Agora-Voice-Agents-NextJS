@@ -6,7 +6,7 @@
 
 - Browser is untrusted and never receives `NEXT_AGORA_APP_CERTIFICATE`.
 - Next.js server routes hold credentials and mint scoped, expiring tokens.
-- Agora cloud hosts the agent session; the configured GeminiSTT, Gemini LLM, and MiniMaxTTS providers use the server-only `NEXT_GOOGLE_API_KEY`.
+- Agora cloud hosts the agent session; the configured GeminiSTT, Gemini LLM, and GeminiTTS providers use the server-only `NEXT_GOOGLE_API_KEY`.
 
 ## Secret Handling Rules
 

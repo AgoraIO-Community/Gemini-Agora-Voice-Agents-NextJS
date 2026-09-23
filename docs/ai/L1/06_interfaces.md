@@ -57,7 +57,7 @@ Required:
 
 - `NEXT_PUBLIC_AGORA_APP_ID`
 - `NEXT_AGORA_APP_CERTIFICATE`
-- `NEXT_GOOGLE_API_KEY` — reused by GeminiSTT (preview) and Gemini `gemini-3.6-flash`; MiniMax TTS is managed
+- `NEXT_GOOGLE_API_KEY` — reused by GeminiSTT and Gemini `gemini-3.6-flash`; Gemini TTS uses the shared Google key
 
 Optional and behavior-affecting:
 
@@ -99,3 +99,5 @@ From `types/conversation.ts` (high-use):
 
 - [conversation_lifecycle.md](L2/conversation_lifecycle.md) — How route contracts are used in sequence.
 - [transcript_pipeline.md](L2/transcript_pipeline.md) — Event-level contract mapping.
+
+Optional server-only preview controls: `GEMINI_TTS_MODEL`, `GEMINI_TTS_VOICE`, `GEMINI_TTS_STYLE`. Defaults: `gemini-3.8-flash-tts`, `Puck`, `warm and reassuring`.

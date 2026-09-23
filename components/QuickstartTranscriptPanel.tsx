@@ -1,6 +1,8 @@
 'use client';
 
-import { useEffect, useMemo, useRef } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
+
+import { hidePerformanceCues } from '@/lib/performance-cues';
 
 type TranscriptMessage = {
   turn_id?: string | number;
@@ -29,6 +31,7 @@ export function QuickstartTranscriptPanel({
   agentUID,
 }: QuickstartTranscriptPanelProps) {
   const scrollRef = useRef<HTMLDivElement>(null);
+  const [showCues, setShowCues] = useState(false);
   const messages = useMemo(
     () =>
       currentInProgressMessage
@@ -53,6 +56,15 @@ export function QuickstartTranscriptPanel({
           <h2 className="text-sm font-semibold text-foreground">Transcript</h2>
           <p className="text-xs text-muted-foreground">Live voice turns</p>
         </div>
+        <label className="flex shrink-0 cursor-pointer items-center gap-2 text-xs text-muted-foreground">
+          <input
+            type="checkbox"
+            checked={showCues}
+            onChange={(event) => setShowCues(event.target.checked)}
+            className="h-4 w-4 accent-primary"
+          />
+          Show cues
+        </label>
       </div>
 
       <div
@@ -67,7 +79,14 @@ export function QuickstartTranscriptPanel({
           messages.map((message, index) => {
             const isAgent = String(message.uid) === agentUID;
             const label = isAgent ? 'Agent' : 'You';
-            const text = message.text?.trim();
+            const text =
+              isAgent && !showCues
+                ? hidePerformanceCues(
+                    message.text ?? '',
+                    message === currentInProgressMessage,
+                  )
+                : message.text?.trim();
+            if (isAgent && !text) return null;
             const time = formatMessageTime(message.createdAt);
 
             return (

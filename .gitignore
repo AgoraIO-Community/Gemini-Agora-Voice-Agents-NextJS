@@ -137,3 +137,5 @@ dist
 .pnpm-store/
 
 .DS_Store
+# Local Agora project binding
+.agora/

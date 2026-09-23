@@ -1,6 +1,6 @@
 # Agent Development Guide
 
-This guide is for coding agents making changes in `agent-quickstart-nextjs`.
+This guide is for coding agents making changes in `Gemini-Agora-Voice-Agents-NextJS`.
 
 ## How to Load
 
@@ -22,6 +22,12 @@ The sections below (Start Here, Patterns, Anti-Patterns, etc.) remain the canoni
 - Use [docs/ai/L1/L2/transcript_pipeline.md](docs/ai/L1/L2/transcript_pipeline.md) for transcript and RTM behavior.
 - For layout and responsibilities inside `components/`, `app/api/`, and `lib/`, use [docs/ai/L1/03_code_map.md](docs/ai/L1/03_code_map.md) and [docs/ai/L1/02_architecture.md](docs/ai/L1/02_architecture.md).
 
+## Preview configuration
+
+Use the published Agora Agent Kit SDK v2.11.0. Gemini TTS shares the ASR/LLM Google key and uses the
+`gemini-live` gate. See README for `GEMINI_TTS_MODEL`, `GEMINI_TTS_VOICE`, and
+`GEMINI_TTS_STYLE`. Use the model ID `gemini-3.8-flash-tts`.
+
 ## Current System Shape
 
 - App shell: Next.js 16 App Router, React 19, and TypeScript
@@ -31,7 +37,7 @@ The sections below (Start Here, Patterns, Anti-Patterns, etc.) remain the canoni
 - UI components: `agora-agent-uikit` for visualizer, transcript, and mic controls
 - Server SDK: `agora-agents` for managed agent session startup
 - API routes: token generation, agent invite, and stop routes live in `app/api`
-- Default agent config: GeminiSTT (`NEXT_GOOGLE_API_KEY`) → Gemini `gemini-3.6-flash` → managed MiniMax TTS.
+- Default agent config: GeminiSTT (`NEXT_GOOGLE_API_KEY`) → Gemini `gemini-3.6-flash` → Gemini TTS preview.
 
 ## Supported Modes
 
@@ -218,3 +224,23 @@ Before finishing a change:
 | fix docs        | Close findings from a docs review or test run                |
 
 The generator and tester live in the [AgoraIO-Community/ai-devkit](https://github.com/AgoraIO-Community/ai-devkit) skill set. See the [progressive disclosure standard](https://github.com/AgoraIO-Community/ai-devkit/blob/main/docs/progressive-disclosure-standard.md) for the full specification.
+
+
+### Voice selection
+
+Choose a voice before starting a conversation. The selector lists all 30 Gemini
+voice names and defaults to Puck. The selected voice is sent as optional
+`ttsVoice` in the start request and applies to that session only. API callers
+that omit it retain the `GEMINI_TTS_VOICE` environment default (or Puck).
+End the conversation to choose another voice.
+
+The prompt describes the Gemini ASR/LLM/TTS pipeline and the session's selected
+voice and model. It permits occasional performance cues. The transcript view
+hides only known cues in agent messages (including incomplete streaming cues);
+raw toolkit events and TTS input remain unchanged. Streaming cue interpretation
+by the preview TTS has not been verified.
+
+The transcript header includes a **Show cues** toggle, off by default. It changes
+only rendered agent text and never modifies TTS input or raw transcript events.
+
+The agent introduces itself as **Gemini** in the prompt and default greeting.

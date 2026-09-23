@@ -24,7 +24,7 @@ Next.js API routes
   -> agora-agents (start/stop managed agent)
 
 Agora Cloud
-  -> Agent session (GeminiSTT preview + Gemini LLM + MiniMaxTTS by default)
+  -> Agent session (GeminiSTT preview + Gemini LLM + GeminiTTS by default)
   -> RTM payloads (transcript, state, metrics, error)
 ```
 
@@ -101,3 +101,23 @@ Agora Cloud
 
 - [conversation_lifecycle.md](L2/conversation_lifecycle.md) — Detailed bootstrapping and teardown timeline.
 - [transcript_pipeline.md](L2/transcript_pipeline.md) — Event mapping, UID remap, in-progress/completed segmentation.
+
+
+### Voice selection
+
+Choose a voice before starting a conversation. The selector lists all 30 Gemini
+voice names and defaults to Puck. The selected voice is sent as optional
+`ttsVoice` in the start request and applies to that session only. API callers
+that omit it retain the `GEMINI_TTS_VOICE` environment default (or Puck).
+End the conversation to choose another voice.
+
+The prompt describes the Gemini ASR/LLM/TTS pipeline and the session's selected
+voice and model. It permits occasional performance cues. The transcript view
+hides only known cues in agent messages (including incomplete streaming cues);
+raw toolkit events and TTS input remain unchanged. Streaming cue interpretation
+by the preview TTS has not been verified.
+
+The transcript header includes a **Show cues** toggle, off by default. It changes
+only rendered agent text and never modifies TTS input or raw transcript events.
+
+The agent introduces itself as **Gemini** in the prompt and default greeting.

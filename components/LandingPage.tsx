@@ -24,8 +24,9 @@ const ConversationComponent = dynamic(() => import('./ConversationComponent'), {
 // the RTC join succeeds, so this wrapper only needs to provide the RTC client.
 const AgoraProvider = dynamic(
   async () => {
-    const { AgoraRTCProvider, default: AgoraRTC } =
-      await import('agora-rtc-react');
+    const { AgoraRTCProvider, default: AgoraRTC } = await import(
+      'agora-rtc-react'
+    );
     return {
       default: function AgoraProviders({
         children,
@@ -55,6 +56,7 @@ const AgoraProvider = dynamic(
 );
 
 export default function LandingPage() {
+  const [voice, setVoice] = useState('Puck');
   const [showConversation, setShowConversation] = useState(false);
 
   // Preload heavy modules on mount so they're already cached when the user
@@ -98,6 +100,7 @@ export default function LandingPage() {
           body: JSON.stringify({
             requester_id: responseData.uid,
             channel_name: responseData.channel,
+            ttsVoice: voice,
           } as ClientStartRequest),
         })
           .then(async (res) => {
@@ -153,7 +156,9 @@ export default function LandingPage() {
         // Both are fetched in parallel to stay within the token-expiry grace-period window.
         const [rtcResponse, rtmResponse] = await Promise.all([
           fetch(`/api/generate-agora-token?channel=${channel}&uid=${uid}`),
-          fetch(`/api/generate-agora-token?channel=${channel}&uid=${agoraData.uid}`),
+          fetch(
+            `/api/generate-agora-token?channel=${channel}&uid=${agoraData.uid}`,
+          ),
         ]);
         const [rtcData, rtmData] = await Promise.all([
           rtcResponse.json(),
@@ -220,6 +225,8 @@ export default function LandingPage() {
         >
           {!showConversation ? (
             <QuickstartPreCallCard
+              voice={voice}
+              onVoiceChange={setVoice}
               isLoading={isLoading}
               error={error}
               onStartConversation={handleStartConversation}

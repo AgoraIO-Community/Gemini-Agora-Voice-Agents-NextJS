@@ -28,7 +28,7 @@ agora project doctor --deep
 
 - `NEXT_PUBLIC_AGORA_APP_ID`: Agora project App ID.
 - `NEXT_AGORA_APP_CERTIFICATE`: Agora App Certificate (server only).
-- `NEXT_GOOGLE_API_KEY`: server-only key reused by GeminiSTT, Gemini LLM, and MiniMaxTTS.
+- `NEXT_GOOGLE_API_KEY`: server-only key reused by GeminiSTT, Gemini LLM, and GeminiTTS.
 
 Optional:
 

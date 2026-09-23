@@ -1,3 +1,4 @@
+import { hidePerformanceCues } from '../lib/performance-cues';
 import { Agent } from 'agora-agents';
 import { RtcTokenBuilder } from 'agora-token';
 import { NextRequest } from 'next/server';
@@ -125,7 +126,7 @@ async function verifyGenerateAgoraTokenReplacesZeroUid() {
   );
 }
 
-async function verifyInviteAgentSuccess() {
+async function verifyInviteAgentSuccess(voice?: string) {
   const { POST: inviteAgent } = await import('../app/api/invite-agent/route');
   const originalCreateSession = Agent.prototype.createSession;
   let capturedSessionConfig: {
@@ -133,6 +134,7 @@ async function verifyInviteAgentSuccess() {
     agentUid?: string;
     remoteUids?: string[];
   } | null = null;
+  let capturedTtsConfig: unknown;
   let capturedSttConfig: {
     params?: Record<string, unknown>;
   } | null = null;
@@ -141,6 +143,7 @@ async function verifyInviteAgentSuccess() {
     this: Agent,
     sessionConfig: unknown,
   ) {
+    capturedTtsConfig = this.tts;
     capturedSessionConfig = sessionConfig as {
       channel?: string;
       agentUid?: string;
@@ -164,6 +167,7 @@ async function verifyInviteAgentSuccess() {
       body: JSON.stringify({
         requester_id: 'user-4321',
         channel_name: 'test-channel',
+        ttsVoice: voice,
       }),
       method: 'POST',
     });
@@ -204,6 +208,14 @@ async function verifyInviteAgentSuccess() {
       JSON.stringify(sessionConfig.remoteUids) ===
         JSON.stringify(['user-4321']),
       'POST /api/invite-agent should scope the session to the requesting user',
+    );
+    assert(
+      JSON.stringify(capturedTtsConfig) === JSON.stringify({
+        vendor: 'gemini', params: { api_key: 'google-api-key',
+          model: process.env.GEMINI_TTS_MODEL || 'gemini-3.8-flash-tts',
+          voice: voice || 'Puck', style: 'warm and reassuring' },
+      }),
+      'POST /api/invite-agent should send Gemini TTS with the shared Google key',
     );
     const sttConfig = capturedSttConfig as {
       params?: Record<string, unknown>;
@@ -276,10 +288,22 @@ async function verifyStopConversationSuccess() {
 }
 
 async function main() {
+  assert(hidePerformanceCues('Hello <laugh> there. [sighs]') === 'Hello there.', 'Hide known performance cues');
+  assert(hidePerformanceCues('Hello <short pa', true) === 'Hello', 'Hide streaming cue prefixes');
+  assert(hidePerformanceCues('Use <div> and [1].') === 'Use <div> and [1].', 'Preserve other markup');
+
   await verifyGenerateAgoraTokenRoute();
   await verifyGenerateAgoraTokenReplacesZeroUid();
   await verifyInviteAgentValidation();
-  await verifyInviteAgentSuccess();
+  delete process.env.GEMINI_TTS_VOICE;
+  delete process.env.GEMINI_TTS_STYLE;
+  for (const model of ['gemini-3.8-flash-tts']) {
+    process.env.GEMINI_TTS_MODEL = model;
+    await verifyInviteAgentSuccess();
+    await verifyInviteAgentSuccess("Kore");
+    await verifyInviteAgentSuccess("Zephyr");
+  }
+  delete process.env.GEMINI_TTS_MODEL;
   await verifyStopConversationValidation();
   await verifyStopConversationSuccess();
 

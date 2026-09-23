@@ -8,6 +8,7 @@ export interface AgoraTokenData {
 }
 
 export interface ClientStartRequest {
+  ttsVoice?: string;
   requester_id: string;
   channel_name: string;
 }

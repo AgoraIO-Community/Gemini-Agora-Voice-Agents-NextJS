@@ -6,7 +6,7 @@
 
 | Field | Value |
 | --- | --- |
-| Repo | `AgoraIO-Conversational-AI/agent-quickstart-nextjs` |
+| Repo | `AgoraIO-Community/Gemini-Agora-Voice-Agents-NextJS` |
 | Type | `frontend-app` |
 | Language | TypeScript, Next.js 16 App Router, React 19 |
 | Deploy Target | Local Node.js dev server, Vercel |
@@ -14,7 +14,7 @@
 | Recipe Role | base |
 | Recipe Version | 0.1.0 |
 | Recipe Status | stable |
-| Last Reviewed | 2026-08-26 |
+| Last Reviewed | 2026-09-23 |
 
 ## L1 — Summaries
 

@@ -18,7 +18,7 @@ types/               Shared TypeScript route/component contracts
 ## API Route Ownership (`app/api`)
 
 - `generate-agora-token/route.ts`: builds RTC+RTM token via `buildTokenWithRtm`.
-- `invite-agent/route.ts`: validates input/env and starts GeminiSTT (preview) → Gemini `gemini-3.6-flash` → MiniMaxTTS using `NEXT_GOOGLE_API_KEY` and standard `AgoraClient`.
+- `invite-agent/route.ts`: validates input/env and starts GeminiSTT → Gemini `gemini-3.6-flash` → GeminiTTS using `NEXT_GOOGLE_API_KEY` and standard `AgoraClient`.
 - `agent-sessions.ts`: process-local registry shared by invite and stop routes so preview-provider agents stop through their retained `AgentSession`.
 - `stop-conversation/route.ts`: removes the retained session, calls `session.stop()`, and treats missing IDs idempotently.
 

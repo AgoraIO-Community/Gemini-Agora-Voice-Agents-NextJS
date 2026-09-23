@@ -17,7 +17,7 @@ All of the managed agent configuration is built in `app/api/invite-agent/route.t
 
 ## The Agent Builder Chain
 
-Standard `AgoraClient` starts the `GeminiSTT` preview-provider session and authenticates with the Agora app ID and certificate. The default providers all reuse `NEXT_GOOGLE_API_KEY`; the Gemini LLM and MiniMaxTTS stages are not Agora-managed.
+Standard `AgoraClient` starts the `GeminiSTT` preview-provider session and authenticates with the Agora app ID and certificate. The default providers all reuse `NEXT_GOOGLE_API_KEY`; the Gemini LLM and GeminiTTS stages are not Agora-managed.
 
 ```ts
 const client = new AgoraClient({ area: Area.US, appId, appCertificate });
@@ -53,11 +53,11 @@ const agent = new Agent({
     temperature: 0.7,
     topP: 0.95,
   }))
-  .withTts(new MiniMaxTTS({
-    key: googleApiKey,
-    voiceName: 'en-US-Chirp3-HD-Charon',
-    languageCode: 'en-US',
-    sampleRate: 24000,
+  .withTts(new GeminiTTS({
+    apiKey: googleApiKey,
+    model: 'gemini-3.8-flash-tts',
+    voice: 'Puck',
+    style: 'warm and reassuring',
   }));
 ```
 
@@ -112,7 +112,7 @@ The default is `Gemini` model `gemini-3.6-flash`, reusing `NEXT_GOOGLE_API_KEY`.
 
 ### Swap the TTS
 
-The default is `MiniMaxTTS` with voice `en-US-Chirp3-HD-Charon`, language `en-US`, sample rate 24000, and the same `NEXT_GOOGLE_API_KEY`. Replace the constructor only when intentionally selecting another provider.
+The default is `GeminiTTS` with model `gemini-3.8-flash-tts`, voice `Puck`, and the same `NEXT_GOOGLE_API_KEY`. Replace the constructor only when intentionally selecting another provider.
 
 ## Response Contract
 
@@ -148,7 +148,7 @@ pnpm run typecheck
 | ------------------------------------------------------ | -------------------------------------------------------------- |
 | `400 channel_name and requester_id are required`       | Browser sent an empty body or wrong field names.               |
 | `500 Agora credentials are not set`                    | `NEXT_AGORA_APP_CERTIFICATE` missing in env.                   |
-| Agent joins but never speaks                           | `NEXT_GOOGLE_API_KEY` missing/invalid or MiniMaxTTS voice settings changed incorrectly. |
+| Agent joins but never speaks                           | `NEXT_GOOGLE_API_KEY` missing/invalid or GeminiTTS voice settings changed incorrectly. |
 | Agent state stuck on `IDLE`                            | `enable_rtm: true` missing or RTM client not subscribed yet.   |
 | `verify:api` fails on the route                        | New required field added without updating the harness.         |
 

@@ -34,7 +34,7 @@ This base recipe provides a copyable browser voice-agent starter with:
 
 - browser RTC audio and RTM event transport
 - server-side token, invite, stop, and optional custom LLM routes
-- default GeminiSTT (preview) → Gemini `gemini-3.6-flash` LLM → managed MiniMax TTS provider configuration using one Google key
+- default GeminiSTT → Gemini `gemini-3.6-flash` LLM → Gemini TTS preview provider configuration using one Google key
 - pre-call, in-call, transcript, metrics, and connection-status UI
 
 ## Baseline Implementation Guidance
@@ -47,7 +47,7 @@ Do not recreate Agora ConvoAI integration from memory. Provider schemas, SDK bui
 
 - `api.routes`: add browser-facing routes under `app/api`, with shared request/response types in `types/conversation.ts` when the client consumes them.
 - `prompts.system`: edit `ADA_PROMPT` and `GREETING` in `app/api/invite-agent/route.ts`.
-- `pipeline.providers`: adjust the `GeminiSTT`, `Gemini`, and `MiniMaxTTS` builder chain. The defaults reuse `NEXT_GOOGLE_API_KEY` and use the standard `AgoraClient`.
+- `pipeline.providers`: adjust the `GeminiSTT`, `Gemini`, and `GeminiTTS` builder chain. The defaults reuse `NEXT_GOOGLE_API_KEY` and use the standard `AgoraClient`.
 - `ui.conversation`: customize `QuickstartPreCallCard`, `QuickstartConversationLayout`, `QuickstartTranscriptPanel`, and `QuickstartPipelineMetrics`.
 
 ## Invariants
@@ -63,7 +63,7 @@ Do not recreate Agora ConvoAI integration from memory. Provider schemas, SDK bui
 - `GET /api/generate-agora-token` returns `{ token, uid, channel }`.
 - `POST /api/invite-agent` accepts `{ requester_id, channel_name }` and returns the agent id/state payload.
 - `POST /api/stop-conversation` accepts `{ agent_id }`, stops the retained `AgentSession`, and treats a missing session as idempotent success.
-- Required env vars are `NEXT_PUBLIC_AGORA_APP_ID`, `NEXT_AGORA_APP_CERTIFICATE`, and `NEXT_GOOGLE_API_KEY`; the Google key serves GeminiSTT and Gemini LLM. Managed MiniMax TTS requires no additional credential.
+- Required env vars are `NEXT_PUBLIC_AGORA_APP_ID`, `NEXT_AGORA_APP_CERTIFICATE`, and `NEXT_GOOGLE_API_KEY`; the Google key serves GeminiSTT and Gemini LLM. Managed Gemini TTS requires no additional credential.
 - `components/LandingPage.tsx` owns pre-call bootstrap and RTM client lifecycle.
 - `components/ConversationComponent.tsx` owns joined-session RTC/toolkit lifecycle.
 - `lib/conversation.ts` owns transcript normalization helpers.
